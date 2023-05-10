@@ -1,8 +1,12 @@
 import os 
+import logging
 import telebot
 import downloader
 from dotenv import load_dotenv
 
+# base logger
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                     level=logging.INFO)
 #region Bot configuration
 # Load environment variables
 load_dotenv()
@@ -31,7 +35,10 @@ def help_command(message):
 def send_url(message):
     if str(message.text).startswith("/spotify http"):
         url = str(message.text).replace("/spotify ","")
+
         bot.reply_to(message, "URL Received")
+        logging.log(logging.INFO, 'URL Received')
+
         bot.send_message(message.chat.id,"Please Wait . . . ")
 
         # downloader 
@@ -39,8 +46,9 @@ def send_url(message):
             downloader.download(url=url ,message_id=message.message_id, chat_id=message.chat.id)
             bot.send_message(message.chat.id,"Download Completed")
         except:
-            bot.send_message(message.chat.id,"Error")
             print("Download Error")
+            logging.log(logging.ERROR, 'Download Error')
+            bot.send_message(message.chat.id,"Download Error")
 
         # send audio
         try:
@@ -51,8 +59,9 @@ def send_url(message):
                 bot.send_audio(chat_id=message.chat.id, audio=open(f'./{file}', 'rb'), timeout=1000)
                 sent += 1
         except:
-            bot.send_message(message.chat.id,"Error")
             print("Send Audio Error")
+            logging.log(logging.ERROR, 'Send Audio Error')
+            bot.send_message(message.chat.id,"Send Audio Error")
 
         # delete files
         # try:
