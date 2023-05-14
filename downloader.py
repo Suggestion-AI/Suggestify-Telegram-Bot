@@ -16,11 +16,8 @@ with open("config.json", "r") as read_file:
 def download(url,message_id,chat_id):
 
     print("URL: ",url)
-    logging.log(logging.INFO, f'URL: {url}')
     print("Chat ID: ",chat_id)
-    logging.log(logging.INFO, f'Chat ID: {chat_id}')
     print("Message ID: ",message_id)
-    logging.log(logging.INFO, f'Message ID: {message_id}')
 
     # make url
     url = "'" + url + "'"
