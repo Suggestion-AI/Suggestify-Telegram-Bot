@@ -1,3 +1,6 @@
 spotdl
+openai
 telebot
+spotipy
+argparse
 python-dotenv

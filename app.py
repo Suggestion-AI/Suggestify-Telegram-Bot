@@ -1,12 +1,9 @@
-import os 
-import logging
+import os
 import telebot
 import downloader
+import suggest_spotify
 from dotenv import load_dotenv
 
-# base logger
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
 #region Bot configuration
 # Load environment variables
 load_dotenv()
@@ -18,27 +15,40 @@ print('Bot is running...')
 #endregion
 
 #region Bot commands
-
-#  /start 
+# /start 
 @bot.message_handler(commands=['start'])
 def help_command(message):
-    bot.send_message(message.chat.id,"Help \n" +
-                                     "----------------------- \n"
+    suggest_spotify.spotify_connect()
+    bot.send_message(message.chat.id,
+                                     "============================== \n" +
+                                     "===========Suggestify=========== \n" +
+                                     "============================== \n" +
+                                     "\n" +
                                      "Spotify Downloader \n" +
+                                     "---------------------------------------- \n"
                                      "/spotify [Enter spotify track url] \n" +
                                      "/spotify https://spotify/..... \n" +
-                                     "----------------------- \n"
+                                     "---------------------------------------- \n" +
+                                     "\n" +
+                                     "Suggest Music Send to you \n"
+                                     "---------------------------------------- \n"
+                                     "/suggest_dl [Enter message] \n" +
+                                     "/suggest_dl I happy very good day \n" +
+                                     "---------------------------------------- \n"
+                                     "\n"
+                                     "Suggest Music Send to your Spotify Playlist \n" +
+                                     "---------------------------------------- \n"
+                                     "/suggest [Enter message] \n" +
+                                     "/suggest I happy very good day \n" +
+                                     "---------------------------------------- \n" 
                                      )
 
 # /spotify https://spotify.com/
 @bot.message_handler(commands=['spotify'])
-def send_url(message):
+def spotify_downloader(message):
     if str(message.text).startswith("/spotify http"):
         url = str(message.text).replace("/spotify ","")
-
         bot.reply_to(message, "URL Received")
-        logging.log(logging.INFO, 'URL Received')
-
         bot.send_message(message.chat.id,"Please Wait . . . ")
 
         # downloader 
@@ -46,9 +56,8 @@ def send_url(message):
             downloader.download(url=url ,message_id=message.message_id, chat_id=message.chat.id)
             bot.send_message(message.chat.id,"Download Completed")
         except:
+            bot.send_message(message.chat.id,"Error")
             print("Download Error")
-            logging.log(logging.ERROR, 'Download Error')
-            bot.send_message(message.chat.id,"Download Error")
 
         # send audio
         try:
@@ -59,9 +68,8 @@ def send_url(message):
                 bot.send_audio(chat_id=message.chat.id, audio=open(f'./{file}', 'rb'), timeout=1000)
                 sent += 1
         except:
+            bot.send_message(message.chat.id,"Error")
             print("Send Audio Error")
-            logging.log(logging.ERROR, 'Send Audio Error')
-            bot.send_message(message.chat.id,"Send Audio Error")
 
         # delete files
         # try:
@@ -69,5 +77,20 @@ def send_url(message):
         #     os.system(f'rm -rf {message.message_id}{message.chat.id}')
         # except:
         #     print("delete files Error")
-     
+
+# / suggest [Message]
+@bot.message_handler(commands=['suggest'])
+def suggest_command(message):
+    if str(message.text).startswith("/suggest"):
+        msg = str(message.text).replace("/spotify ","")
+        bot.reply_to(message, "Message Received")
+        bot.send_message(message.chat.id,"Please Wait . . . ")
+
+        try:
+            suggest_spotify.suggest_music(msg=msg)
+            bot.send_message(message.chat.id,"Suggestify")
+        except:
+            bot.send_message(message.chat.id,"Error")
+            print("Suggestify Error")
+
 #endregion
