@@ -2,8 +2,13 @@ import os
 import json
 import openai
 import spotipy
+import logging
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
+
+# base logger
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                     level=logging.INFO)
 
 #region --- access token & Connection ---
 load_dotenv()
@@ -22,19 +27,27 @@ spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = SPOTIFY_CLIENT_I
                                                scope="playlist-modify-public"))
 #endregion
 
+#region --- Spotify Checker ---
 def spotify_connect():
     print ("----------User-ID----------")
     user_id = spotify.me()['id']
+    logging.log(logging.INFO, "Spotify User ID:" + user_id)
     print (user_id)
     print ("---------------------------")
+#endregion
 
-    print ("--------PlayList-ID--------")
-    playlists = spotify.current_user_playlists()
-    for playlist in playlists['items']:
-        print(playlist["name"],"-",playlist["id"])
+#region --- Suggest Music ---
+def suggest_music(playlist_name ,msg):
+
+    playlist_name = f"{ playlist_name }"
+    user_id = spotify.me()['id']
+    playlist = spotify.user_playlist_create(user_id, playlist_name)
+
+    print ("------New-PlayList-ID------")
+    print (playlist["name"],"-",playlist["id"])
+    logging.log(logging.INFO, "New Spotify Playlist ID:" + playlist["name"] + "-" + playlist["id"])
     print ("---------------------------")
 
-def suggest_music(msg):
     response = openai.Completion.create(
         model="text-davinci-003",
         prompt=f"10 lists suggest music piece that would accompany artwork nicely depending upon its {msg} type along ",
@@ -67,10 +80,12 @@ def suggest_music(msg):
             track_uri = results['tracks']['items'][0]['uri']
             print(track_uri)
     
-            # spotify.playlist_add_items(playlist['id'], [track_uri])
-            spotify.playlist_add_items(os.environ.get("SPOTIFY_PLAYLIST_ID"), [track_uri])
+            spotify.playlist_add_items(playlist['id'], [track_uri])
+            logging.log(logging.INFO, "Added to Spotify Playlist:" + playlist["name"] + "-" + track_name + track_uri)
+            # spotify.playlist_add_items(os.environ.get("SPOTIFY_PLAYLIST_ID"), [track_uri])
 
     # get user playlist
-    playlists = spotify.current_user_playlists()
-    for playlist in playlists['items']:
-        print(playlist['name'])
+    print(playlist["name"],"-",playlist["id"], playlist["external_urls"]["spotify"])
+    logging.log(logging.INFO, "Create Spotify Playlist Success:" + playlist["name"] + "-" + playlist["id"] + playlist["external_urls"]["spotify"])
+    return playlist["external_urls"]["spotify"]
+#endregion
