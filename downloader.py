@@ -1,7 +1,6 @@
 import os
 import json
 import logging
-from dotenv import load_dotenv
 
 # base logger
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
