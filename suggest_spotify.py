@@ -50,7 +50,7 @@ def suggest_music(playlist_name ,msg):
 
     response = openai.Completion.create(
         model="text-davinci-003",
-        prompt=f"10 lists suggest music piece that would accompany artwork nicely depending upon its {msg} type along ",
+        prompt=f"Give me 10 list music {msg}",
         temperature=0.9,
         max_tokens=4000,
         top_p=1.0,

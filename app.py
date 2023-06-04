@@ -19,24 +19,25 @@ print('Bot is running...')
 @bot.message_handler(commands=['start'])
 def help_command(message):
     suggest_spotify.spotify_connect()
+    bot.send_message(message.chat.id, "Welcome to the music Suggestify app!")
     bot.send_message(message.chat.id,
                                      "============================ \n" +
                                      "==========Suggestify========== \n" +
                                      "============================ \n" +
+                                    #  "\n" +
+                                    #  "Spotify Downloader \n" +
+                                    #  "--------------------------------------- \n"
+                                    #  "/spotify [Enter spotify track url] \n" +
+                                    #  "/spotify https://spotify/..... \n" +
+                                    #  "--------------------------------------- \n" +
                                      "\n" +
-                                     "Spotify Downloader \n" +
-                                     "--------------------------------------- \n"
-                                     "/spotify [Enter spotify track url] \n" +
-                                     "/spotify https://spotify/..... \n" +
-                                     "--------------------------------------- \n" +
-                                     "\n" +
-                                     "Suggest Music Send to you \n"
+                                     "Suggest: Send music here \n"
                                      "--------------------------------------- \n"
                                      "/suggest_dl [Enter message] \n" +
                                      "/suggest_dl I happy very good day \n" +
                                      "--------------------------------------- \n"
                                      "\n"
-                                     "Suggest Music Send to your Spotify Playlist \n" +
+                                     "Suggest: Send spotify playlist link here \n" +
                                      "--------------------------------------- \n"
                                      "/suggest [Enter message] \n" +
                                      "/suggest I happy very good day \n" +
@@ -44,32 +45,32 @@ def help_command(message):
                                      )
 
 # /spotify https://spotify.com/
-@bot.message_handler(commands=['spotify'])
-def spotify_downloader(message):
-    if str(message.text).startswith("/spotify http"):
-        url = str(message.text).replace("/spotify ","")
-        bot.reply_to(message, "URL Received")
-        bot.send_message(message.chat.id,"Please Wait . . . ")
+# @bot.message_handler(commands=['spotify'])
+# def spotify_downloader(message):
+#     if str(message.text).startswith("/spotify http"):
+#         url = str(message.text).replace("/spotify ","")
+#         bot.reply_to(message, "URL Received")
+#         bot.send_message(message.chat.id,"Please Wait . . . ")
 
-        # downloader 
-        try:
-            downloader.download(url=url ,message_id=message.message_id, chat_id=message.chat.id)
-            bot.send_message(message.chat.id,"Download Completed")
-        except:
-            bot.send_message(message.chat.id,"Error")
-            print("Download Error")
+#         # downloader 
+#         try:
+#             downloader.download(url=url ,message_id=message.message_id, chat_id=message.chat.id)
+#             bot.send_message(message.chat.id,"Download Completed")
+#         except:
+#             bot.send_message(message.chat.id,"Error")
+#             print("Download Error")
 
-        # send audio
-        try:
-            sent = 0
-            bot.send_message(message.chat.id,"Sending To You . . .")
-            files = [os.path.join(dp, f) for dp, dn, filenames in os.walk(".") for f in filenames if os.path.splitext(f)[1] == '.mp3']
-            for file in files:
-                bot.send_audio(chat_id=message.chat.id, audio=open(f'./{file}', 'rb'), timeout=1000)
-                sent += 1
-        except:
-            bot.send_message(message.chat.id,"Error")
-            print("Send Audio Error")
+#         # send audio
+#         try:
+#             sent = 0
+#             bot.send_message(message.chat.id,"Sending To You . . .")
+#             files = [os.path.join(dp, f) for dp, dn, filenames in os.walk(".") for f in filenames if os.path.splitext(f)[1] == '.mp3']
+#             for file in files:
+#                 bot.send_audio(chat_id=message.chat.id, audio=open(f'./{file}', 'rb'), timeout=1000)
+#                 sent += 1
+#         except:
+#             bot.send_message(message.chat.id,"Error")
+#             print("Send Audio Error")
 
         # delete files
         # try:
