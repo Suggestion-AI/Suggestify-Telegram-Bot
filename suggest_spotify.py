@@ -59,14 +59,14 @@ def suggest_music(playlist_name ,msg):
         stop=["11"]
     )
 
-    with open("../result.json", "w") as output_file:
+    with open("./result.json", "w") as output_file:
         json.dump(response, output_file)
     
-    with open('../result.json', 'r') as f:
+    with open('./result.json', 'r') as f:
         data = json.load(f)
     choices = data["choices"][0]["text"].strip()
 
-    with open("../result.txt", "w") as f:
+    with open("./result.txt", "w") as f:
         for item in choices.split("\n"):
             replace_number = item.translate(str.maketrans("", "", ".0123456789"))
             song_name = replace_number.split(' by ')[0]
