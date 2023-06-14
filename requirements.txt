@@ -3,4 +3,5 @@ openai
 telebot
 spotipy
 argparse
+langchain
 python-dotenv

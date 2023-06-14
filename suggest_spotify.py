@@ -5,6 +5,7 @@ import spotipy
 from logger import get_logger
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
+from llm.openai import open_ai_llm_completion_handler
 
 # base logger
 logger = get_logger(__name__)
@@ -48,33 +49,24 @@ def suggest_music(playlist_name ,msg):
     logger.info("New Spotify Playlist ID:" + playlist["name"] + "-" + playlist["id"])
     print ("---------------------------")
 
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=f"Give me 10 list music {msg}",
-        temperature=0.9,
-        max_tokens=4000,
-        top_p=1.0,
-        frequency_penalty=0.9,
-        presence_penalty=0.9,
-        stop=["11"]
-    )
+    print ("-----------Prompt----------")
+    response = open_ai_llm_completion_handler(f"Give me 10 list music {msg}")
+    print ("---------------------------")
 
-    with open("./result.json", "w") as output_file:
-        json.dump(response, output_file)
-    
-    with open('./result.json', 'r') as f:
-        data = json.load(f)
-    choices = data["choices"][0]["text"].strip()
-
+    # write response to txt file 
     with open("./result.txt", "w") as f:
-        for item in choices.split("\n"):
-            replace_number = item.translate(str.maketrans("", "", ".0123456789"))
-            song_name = replace_number.split(' by ')[0]
-            # artist_name = replace_number.split(' by ')[1]
-            selected_text = song_name.replace('"', '')
-            f.write(selected_text + "\n")
+        response = response.strip().translate(str.maketrans("", "", ".0123456789"))
+        response = response.replace('by', '-')
+    
+        for song in response.split('\n'):
+            song_name = song.split('-')[0]
+            f.write(song_name + "\n")
 
-            track_name = selected_text + "\n"
+    with open('./result.txt', 'r') as input_file:
+        file_contents = input_file.readlines()
+
+        for song in file_contents:
+            track_name = song.strip()
             query = f"{track_name}"
             results = spotify.search(q=query, type="track", limit=1)
             track_uri = results['tracks']['items'][0]['uri']
@@ -86,5 +78,4 @@ def suggest_music(playlist_name ,msg):
     # get user playlist
     logger.info("Create Spotify Playlist Success:" + playlist["name"] + "-" + playlist["id"] + playlist["external_urls"]["spotify"])
     return playlist["external_urls"]["spotify"]
-
 #endregion
