@@ -98,7 +98,7 @@ def help_command(message):
 def suggest_command(message):
 
     # info log
-    logger.info("User: {} - /suggest".format(message.chat.username) + "Suggestify Run" )
+    logger.info("User: {} - /suggest".format(message.chat.username) + " - Suggestify Run" )
 
     # checking get command
     if str(message.text).startswith("/suggest"):
@@ -125,7 +125,7 @@ def suggest_command(message):
 def suggest_dl_command(message):
 
     # info log
-    logger.info("User: {} - /suggest_dl".format(message.chat.username))
+    logger.info("User: {} - /suggest_dl".format(message.chat.username) + " - Suggestify_dl Run")
 
     # checking get command
     if str(message.text).startswith("/suggest_dl"):
