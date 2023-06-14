@@ -1,10 +1,9 @@
 import os
 import json
-import logging
+from logger import get_logger
 
 # base logger
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+logger = get_logger(__name__)
 
 #region Configurations
 # load config
@@ -26,13 +25,14 @@ def download(url,message_id,chat_id):
     os.system(f'mkdir -p temp/{message_id}{chat_id}')
     os.chdir(f'./temp/{message_id}{chat_id}')
 
-    logging.log(logging.INFO, f'start downloading')
-
+    logger.info(f'current directory: {os.getcwd()}')
+    logger.info(f'start downloading')
+                
     # spotify downloader
     if config["SPOTDL_DOWNLOADER"]:
         os.system(f'spotdl {url}')
     elif config["SPOTIFYDL_DOWNLOADER"]:
         os.system(f'spotifydl {url}')
     else:
-        logging.log(logging.ERROR, 'you should select one of downloader')
+        logger.log(logging.ERROR, 'you should select one of downloader')
 #endregion

@@ -2,13 +2,12 @@ import os
 import json
 import openai
 import spotipy
-import logging
+from logger import get_logger
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
 
 # base logger
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+logger = get_logger(__name__)
 
 #region --- access token & Connection ---
 load_dotenv()
@@ -17,6 +16,7 @@ SPOTIFY_CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID")
 SPOTIFY_PLAYLIST_ID = os.environ.get("SPOTIFY_PLAYLIST_ID")
 SPOTIFY_REDIRECT_URI = os.environ.get("SPOTIFY_REDIRECT_URI")
 SPOTIFY_CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET")
+
 # Connect Open AI
 openai.api_key = OPEN_AI_TOKEN
 
@@ -31,8 +31,8 @@ spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = SPOTIFY_CLIENT_I
 def spotify_connect():
     print ("----------User-ID----------")
     user_id = spotify.me()['id']
-    logging.log(logging.INFO, "Spotify User ID:" + user_id)
-    print (user_id)
+    logger.info("Suggestify Running .... ")
+    logger.info("Spotify User ID:" + user_id)
     print ("---------------------------")
 #endregion
 
@@ -45,7 +45,7 @@ def suggest_music(playlist_name ,msg):
 
     print ("------New-PlayList-ID------")
     print (playlist["name"],"-",playlist["id"])
-    logging.log(logging.INFO, "New Spotify Playlist ID:" + playlist["name"] + "-" + playlist["id"])
+    logger.info("New Spotify Playlist ID:" + playlist["name"] + "-" + playlist["id"])
     print ("---------------------------")
 
     response = openai.Completion.create(
@@ -81,11 +81,10 @@ def suggest_music(playlist_name ,msg):
             print(track_uri)
     
             spotify.playlist_add_items(playlist['id'], [track_uri])
-            logging.log(logging.INFO, "Added to Spotify Playlist:" + playlist["name"] + "-" + track_name + track_uri)
-            # spotify.playlist_add_items(os.environ.get("SPOTIFY_PLAYLIST_ID"), [track_uri])
+            logger.info("Added to Spotify Playlist:" + playlist["name"] + "-" + track_name + track_uri)
 
     # get user playlist
-    print(playlist["name"],"-",playlist["id"], playlist["external_urls"]["spotify"])
-    logging.log(logging.INFO, "Create Spotify Playlist Success:" + playlist["name"] + "-" + playlist["id"] + playlist["external_urls"]["spotify"])
+    logger.info("Create Spotify Playlist Success:" + playlist["name"] + "-" + playlist["id"] + playlist["external_urls"]["spotify"])
     return playlist["external_urls"]["spotify"]
+
 #endregion
