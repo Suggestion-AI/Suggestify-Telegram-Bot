@@ -1,5 +1,4 @@
 import os
-import json
 import openai
 import spotipy
 from logger import get_logger
@@ -50,7 +49,9 @@ def suggest_music(playlist_name ,msg):
     print ("---------------------------")
 
     print ("-----------Prompt----------")
-    response = open_ai_llm_completion_handler(f"Give me 10 list music {msg}")
+    with open("./llm/prompts/spotify_playlist_generator.txt", "r") as f:
+        prompt = f.read()
+        response = open_ai_llm_completion_handler(f"{prompt}"+f"Your initial prompt will be: {msg}")
     print ("---------------------------")
 
     # write response to txt file 
@@ -58,8 +59,8 @@ def suggest_music(playlist_name ,msg):
         response = response.strip().translate(str.maketrans("", "", ".0123456789"))
         response = response.replace('by', '-')
     
-        for song in response.split('\n'):
-            song_name = song.split('-')[0]
+        for song in response.split('\n')[4:]:
+            song_name = song
             f.write(song_name + "\n")
 
     with open('./result.txt', 'r') as input_file:
