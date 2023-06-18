@@ -102,7 +102,7 @@ def suggest_command(message):
 
     # checking get command
     if str(message.text).startswith("/suggest"):
-        msg = str(message.text).replace("/spotify ","")
+        msg = str(message.text).replace("/suggest ","")
         bot.reply_to(message, "Message Received")
         bot.send_message(message.chat.id,"Please Wait . . . ")
         
