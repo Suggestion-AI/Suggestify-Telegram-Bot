@@ -1,4 +1,4 @@
-import app
+import src.main
 
 if __name__ == '__main__':
-   app.bot.polling()
+   src.main.bot.polling()

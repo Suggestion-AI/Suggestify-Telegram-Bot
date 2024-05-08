@@ -1,5 +1,5 @@
 import os
-from logger import get_logger
+from src.logger import get_logger
 from dotenv import load_dotenv
 from langchain.llms import OpenAI
 

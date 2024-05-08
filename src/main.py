@@ -1,8 +1,7 @@
 import os
-import telebot
-import downloader
-import suggest_spotify
-from logger import get_logger
+import src.downloader
+import src.suggest_spotify
+from src.logger import get_logger
 from dotenv import load_dotenv
 
 # logger
@@ -26,7 +25,7 @@ def help_command(message):
     logger.info("User: {} - /start".format(message.chat.username))
 
     # connect spotify
-    suggest_spotify.spotify_connect()
+    src.suggest_spotify.spotify_connect()
 
     # send welcome and help messages
     bot.send_message(message.chat.id, "Welcome to the music Suggestify app!")
@@ -108,7 +107,7 @@ def suggest_command(message):
         
         # spotify
         try:
-            playlist = suggest_spotify.suggest_music(playlist_name=message.chat.id, msg=msg)
+            playlist = src.suggest_spotify.suggest_music(playlist_name=message.chat.id, msg=msg)
             # info log
             logger.info("User: {} - /suggest".format(message.chat.username) + " - Suggestify Success")
             bot.send_message(message.chat.id,playlist)
@@ -135,7 +134,7 @@ def suggest_dl_command(message):
 
         # spotify
         try:
-            playlist = suggest_spotify.suggest_music(playlist_name=message.chat.id, msg=msg)
+            playlist = src.suggest_spotify.suggest_music(playlist_name=message.chat.id, msg=msg)
             # info log
             logger.info("User: {} - /suggest_dl".format(message.chat.username) + " - Suggestify_dl Success")
             bot.send_message(message.chat.id,playlist)
@@ -147,7 +146,7 @@ def suggest_dl_command(message):
         # downloader 
         try:
             bot.send_message(message.chat.id,"Start Downloading ...")
-            downloader.download(url=playlist ,message_id=message.message_id, chat_id=message.chat.id)
+            src.downloader.download(url=playlist ,message_id=message.message_id, chat_id=message.chat.id)
             # info log
             logger.info("User: {} - Download ".format(message.chat.username) + " - Download Success")
             bot.send_message(message.chat.id,"Download Completed")

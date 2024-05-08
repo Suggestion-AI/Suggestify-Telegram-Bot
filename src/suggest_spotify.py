@@ -1,10 +1,10 @@
 import os
 import openai
 import spotipy
-from logger import get_logger
+from src.logger import get_logger
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
-from llm.openai import open_ai_llm_completion_handler
+from src.openai import open_ai_llm_completion_handler
 
 # base logger
 logger = get_logger(__name__)
@@ -49,8 +49,9 @@ def suggest_music(playlist_name ,msg):
     print ("---------------------------")
 
     print ("-----------Prompt----------")
-    with open("./llm/prompts/spotify_playlist_generator.txt", "r") as f:
+    with open("../src/llm/prompts/spotify_playlist_generator.txt", "r") as f:
         prompt = f.read()
+        print(prompt)
         response = open_ai_llm_completion_handler(f"{prompt}"+f"Your initial prompt will be: {msg}")
     print ("---------------------------")
 
