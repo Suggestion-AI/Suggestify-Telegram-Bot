@@ -1,7 +1,8 @@
-spotdl
-openai
-telebot
-spotipy
-argparse
-langchain
-python-dotenv
+groq==0.5.0
+spotdl==4.2.4
+openai==0.27.8
+spotipy==2.23.0
+argparse==1.4.0
+langchain==0.0.289
+python-dotenv==1.0.0
+pyTelegramBotAPI==4.12.0
