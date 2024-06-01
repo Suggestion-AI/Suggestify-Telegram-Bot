@@ -1,6 +1,6 @@
 import os
 import json
-from src.logger import get_logger
+from logger import get_logger
 
 # base logger
 logger = get_logger(__name__)
@@ -34,5 +34,5 @@ def download(url,message_id,chat_id):
     elif config["SPOTIFYDL_DOWNLOADER"]:
         os.system(f'spotifydl {url}')
     else:
-        logger.error('you should select one of downloader')
+        logger.log(logging.ERROR, 'you should select one of downloader')
 #endregion
