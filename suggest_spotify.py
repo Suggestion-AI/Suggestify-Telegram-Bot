@@ -1,10 +1,12 @@
 import os
 import openai
 import spotipy
-from src.logger import get_logger
+import re
+from logger import get_logger
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
-from src.openai import open_ai_llm_completion_handler
+from llm.llama3 import llama3_completion_handler
+from llm.openai import open_ai_llm_completion_handler
 
 # base logger
 logger = get_logger(__name__)
@@ -49,33 +51,42 @@ def suggest_music(playlist_name ,msg):
     print ("---------------------------")
 
     print ("-----------Prompt----------")
-    with open("../src/llm/prompts/spotify_playlist_generator.txt", "r") as f:
+    with open("./llm/prompts/spotify_playlist_generator.txt", "r") as f:
         prompt = f.read()
-        print(prompt)
-        response = open_ai_llm_completion_handler(f"{prompt}"+f"Your initial prompt will be: {msg}")
+        # response = open_ai_llm_completion_handler(f"{prompt}"+f"Your initial prompt will be: {msg}")
+        response = llama3_completion_handler(f"{prompt}"+f"Your initial prompt will be: {msg}")
+        print (response)
     print ("---------------------------")
+
+    lines = response.content.strip().split('\n')[1:]
+    lines_string = '\n'.join(lines)
+    print(lines)
 
     # write response to txt file 
     with open("./result.txt", "w") as f:
-        response = response.strip().translate(str.maketrans("", "", ".0123456789"))
-        response = response.replace('by', '-')
+        response = lines_string.strip().translate(str.maketrans("", "", ".0123456789"))
+        response = lines_string.replace('by', '-')
     
-        for song in response.split('\n')[4:]:
+        for song in response.split('\n')[1:21]:
             song_name = song
             f.write(song_name + "\n")
 
     with open('./result.txt', 'r') as input_file:
+
         file_contents = input_file.readlines()
 
         for song in file_contents:
-            track_name = song.strip()
-            query = f"{track_name}"
-            results = spotify.search(q=query, type="track", limit=1)
-            track_uri = results['tracks']['items'][0]['uri']
-            print(track_uri)
-    
-            spotify.playlist_add_items(playlist['id'], [track_uri])
-            logger.info("Added to Spotify Playlist:" + playlist["name"] + "-" + track_name + track_uri)
+            try:
+                track_name = song.strip()
+                query = f"{track_name}"
+                results = spotify.search(q=query, type="track", limit=1)
+                track_uri = results['tracks']['items'][0]['uri']
+                print(track_uri)
+            except Exception as e:
+                print("An error occurred:", e)
+            finally: 
+                spotify.playlist_add_items(playlist['id'], [track_uri])
+                logger.info("Added to Spotify Playlist:" + playlist["name"] + "-" + track_name + track_uri)
 
     # get user playlist
     logger.info("Create Spotify Playlist Success:" + playlist["name"] + "-" + playlist["id"] + playlist["external_urls"]["spotify"])

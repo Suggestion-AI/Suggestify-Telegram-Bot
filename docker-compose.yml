@@ -1,9 +1,11 @@
-version: '3.9'
+version: "3.8"
 services:
   app:
     image: suggestify:v0.1
     restart: always
     volumes:
       - ./volume:/app/temp
+    environment:
+      - GROQ_API_KEY=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
 volumes:
   volume:
