@@ -39,5 +39,4 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           script: |
             cd /home/ubuntu/suggestify-telegram-bot/
-            docker compose pull
-            docker compose up -d
+            ls
