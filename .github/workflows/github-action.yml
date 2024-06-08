@@ -38,7 +38,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           source: "docker-compose.yml"
-          target: "/path/on/your/server/docker-compose.yml"
+          target: "/home/ubuntu/suggestify-telegram-bot/docker-compose.yml"
 
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@v0.1.3
