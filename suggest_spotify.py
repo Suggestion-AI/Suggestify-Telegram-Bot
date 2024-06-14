@@ -6,7 +6,6 @@ from logger import get_logger
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
 from llm.llama3 import llama3_completion_handler
-from llm.openai import open_ai_llm_completion_handler
 
 # base logger
 logger = get_logger(__name__)
