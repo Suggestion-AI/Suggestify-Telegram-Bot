@@ -41,7 +41,7 @@ def help_command(message):
                                     #  "/spotify https://spotify/..... \n" +
                                     #  "--------------------------------------- \n" +
                                      "\n" +
-                                     "Suggest: Send (music) here \n"
+                                     "Suggest: Send music here \n"
                                      "--------------------------------------- \n"
                                      "/suggest_dl [Enter message] \n" +
                                      "/suggest_dl I happy very good day \n" +
@@ -113,7 +113,8 @@ def suggest_command(message):
             logger.info("User: {} - /suggest".format(message.chat.username) + " - Suggestify Success")
             bot.send_message(message.chat.id,playlist)
             bot.send_message(message.chat.id,"Suggestify")
-        except:
+        except (ZeroDivisionError, ValueError) as e:
+            print(f"Error occurred: {e}")
             # error log 
             logger.error("Error: User: {} - /suggest".format(message.chat.username) + " - Suggestify Error")
             bot.send_message(message.chat.id,"Error")
