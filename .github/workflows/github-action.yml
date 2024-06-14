@@ -25,3 +25,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/suggestify-telegram-bot:latest
+
+      - name: SSH and deploy
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /home/ubuntu/suggestify-telegram-bot
+            docker compose pull
+            docker compose restart
