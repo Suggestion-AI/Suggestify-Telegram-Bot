@@ -41,7 +41,7 @@ def help_command(message):
                                     #  "/spotify https://spotify/..... \n" +
                                     #  "--------------------------------------- \n" +
                                      "\n" +
-                                     "Suggest: Send music here \n"
+                                     "Suggest: Send (music) here \n"
                                      "--------------------------------------- \n"
                                      "/suggest_dl [Enter message] \n" +
                                      "/suggest_dl I happy very good day \n" +
