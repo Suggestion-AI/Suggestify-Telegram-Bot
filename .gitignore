@@ -167,4 +167,4 @@ result.txt
 result.json
 
 # prompts
-/llm/prompts/*
+# /llm/prompts/*
