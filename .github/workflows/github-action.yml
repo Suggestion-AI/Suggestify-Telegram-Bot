@@ -26,6 +26,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/suggestify-telegram-bot:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
       - name: SSH and deploy
         uses: appleboy/ssh-action@v0.1.4
         with:
