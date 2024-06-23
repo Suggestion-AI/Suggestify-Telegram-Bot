@@ -94,7 +94,7 @@ def help_command(message):
 
 #region Suggest Music
 # / suggest [Message]
-@bot.message_handler(commands=['suggest'])
+@bot.message_handler()
 def suggest_command(message):
 
     # info log
