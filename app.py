@@ -34,24 +34,28 @@ def help_command(message):
                                      "============================ \n" +
                                      "==========Suggestify========== \n" +
                                      "============================ \n" +
+                                     "--------------------------------------- \n"
+                                     "[Enter your prompt (Feeling , Music style ....)] \n" +
+                                     "I happy very good day \n" +
+                                     "--------------------------------------- \n" 
                                     #  "\n" +
                                     #  "Spotify Downloader \n" +
                                     #  "--------------------------------------- \n"
                                     #  "/spotify [Enter spotify track url] \n" +
                                     #  "/spotify https://spotify/..... \n" +
                                     #  "--------------------------------------- \n" +
-                                     "\n" +
-                                     "Suggest: Send (music) here \n"
-                                     "--------------------------------------- \n"
-                                     "/suggest_dl [Enter message] \n" +
-                                     "/suggest_dl I happy very good day \n" +
-                                     "--------------------------------------- \n"
-                                     "\n"
-                                     "Suggest: Send spotify playlist link here \n" +
-                                     "--------------------------------------- \n"
-                                     "/suggest [Enter message] \n" +
-                                     "/suggest I happy very good day \n" +
-                                     "--------------------------------------- \n" 
+                                    #  "\n" +
+                                    #  "Suggest: Send (music) here \n"
+                                    #  "--------------------------------------- \n"
+                                    #  "/suggest_dl [Enter message] \n" +
+                                    #  "/suggest_dl I happy very good day \n" +
+                                    #  "--------------------------------------- \n"
+                                    #  "\n"
+                                    #  "Suggest: Send spotify playlist link here \n" +
+                                    #  "--------------------------------------- \n"
+                                    #  "/suggest [Enter message] \n" +
+                                    #  "/suggest I happy very good day \n" +
+                                    #  "--------------------------------------- \n" 
                                      )
 #endregion
 
