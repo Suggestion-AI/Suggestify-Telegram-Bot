@@ -36,7 +36,8 @@ def help_command(message):
                                      "============================ \n" +
                                      "--------------------------------------- \n"
                                      "[Enter your prompt (Feeling , Music style ....)] \n" +
-                                     "I happy very good day \n" +
+                                     "| :> | :> | :> "
+                                     "Ex: I happy very good day \n" +
                                      "--------------------------------------- \n" 
                                     #  "\n" +
                                     #  "Spotify Downloader \n" +
