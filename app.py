@@ -101,8 +101,8 @@ def suggest_command(message):
     logger.info("User: {} - /suggest".format(message.chat.username) + " - Suggestify Run" )
 
     # checking get command
-    if str(message.text).startswith("/suggest"):
-        msg = str(message.text).replace("/suggest ","")
+    if str(message.text):
+        msg = str(message.text)
         bot.reply_to(message, "Message Received")
         bot.send_message(message.chat.id,"Please Wait . . . ")
         
